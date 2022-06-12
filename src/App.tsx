@@ -37,9 +37,10 @@ const App = () => {
     if (activeWordIndex === words.length) {
       return;
     }
-    if (value.endsWith(" ")) {
-      setStartCounting(true);
 
+    setStartCounting(true);
+
+    if (value.endsWith(" ")) {
       if (activeWordIndex === words.length - 1) {
         setStartCounting(false);
         setUserInput("Finished");
