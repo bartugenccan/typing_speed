@@ -6,7 +6,7 @@ interface Props {
 
 const Header: React.FC<Props> = ({ restartGame }) => {
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-green-500 p-6 w-full">
+    <nav className="flex items-center justify-between flex-wrap bg-green-500 p-6 w-full fixed top-0">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
         <span className="font-semibold text-xl tracking-tight">
           Typing Speed Test App

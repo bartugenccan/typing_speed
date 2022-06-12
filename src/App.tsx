@@ -1,5 +1,8 @@
-import React, { ReactEventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+
+// spinner
+import { SpinnerDotted } from "spinners-react";
 
 // components
 import Word from "./components/Word";
@@ -81,24 +84,24 @@ const App = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-screen justify-center items-center">
       <Header restartGame={restartGame} />
       {loading ? (
         <div className="flex justify-center">
-          <div className="spinner">Loading..</div>
+          <div className="spinner">
+            <SpinnerDotted />
+          </div>
         </div>
       ) : (
         <>
           <div className="flex flex-col items-center">
-            <div className="flex flex-col items-center">
-              <Timer
-                startCounting={startCounting}
-                correctWords={correctWords.length}
-                timeElapsed={timeElapsed}
-                setTimeElapsed={setTimeElapsed}
-              />
-            </div>
-            <p>
+            <Timer
+              startCounting={startCounting}
+              correctWords={correctWords.length}
+              timeElapsed={timeElapsed}
+              setTimeElapsed={setTimeElapsed}
+            />
+            <p className=" w-1/2 border-green-500 border-4 p-8 rounded-lg">
               {words.map((word, index) => (
                 <Word
                   key={index}
@@ -110,15 +113,14 @@ const App = () => {
               ))}
             </p>
           </div>
-          <div className="flex flex-col items-center">
-            <input
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              type="text"
-              value={userInput}
-              onChange={(e) => checkInput(e.target.value)}
-              placeholder="Type here..."
-            />
-          </div>
+
+          <input
+            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+            type="text"
+            value={userInput}
+            onChange={(e) => checkInput(e.target.value)}
+            placeholder="Type here..."
+          />
         </>
       )}
     </div>

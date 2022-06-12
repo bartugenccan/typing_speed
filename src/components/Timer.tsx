@@ -27,10 +27,16 @@ const Timer: React.FC<Props> = ({
   const WPM = correctWords / minutes;
 
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col items-center">
-        <div className="text-6xl font-bold">Time: {timeElapsed}</div>
-        <div className="text-4xl font-bold">{(WPM | 0).toFixed(2)} WPM</div>
+    <div className="flex justify-center items-center mb-12">
+      <div className="bg-green-500 p-5 rounded-xl mr-5 ">
+        <span className="font-semibold text-5xl tracking-tight text-white">
+          Time: {timeElapsed}
+        </span>
+      </div>
+      <div className="text-5xl font-bold bg-green-500 p-5 rounded-xl">
+        <span className="font-semibold text-5xl tracking-tight text-white">
+          WPM: {(WPM | 0).toFixed(2)}
+        </span>
       </div>
     </div>
   );
