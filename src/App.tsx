@@ -4,21 +4,31 @@ import axios from "axios";
 // components
 import Word from "./components/Word";
 import Timer from "./components/Timer";
+import Header from "./components/Header";
 
 const App = () => {
+  // words states
   const [userInput, setUserInput] = useState<string>("");
   const [words, setWords] = useState<string[]>([]);
   const [activeWordIndex, setActiveWordIndex] = useState<number>(0);
   const [correctWords, setCorrectWords] = useState<string[]>([]);
   const [incorrectWords, setIncorrectWords] = useState<string[]>([]);
+
+  // timer states
   const [startCounting, setStartCounting] = useState<boolean>(false);
+  const [timeElapsed, setTimeElapsed] = useState<number>(0);
+
+  // loading
   const [loading, setLoading] = useState<boolean>(false);
 
   const getWords = async () => {
-    const list = await axios.get("https://random-word-api.herokuapp.com/all");
-
-    const newList = shuffle(list.data);
+    setLoading(true);
+    const { data } = await axios.get(
+      "https://random-word-api.herokuapp.com/all"
+    );
+    const newList = shuffle(data);
     setWords(newList.slice(0, 20));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -37,9 +47,10 @@ const App = () => {
     if (activeWordIndex === words.length) {
       return;
     }
-    if (value.endsWith(" ")) {
-      setStartCounting(true);
 
+    setStartCounting(true);
+
+    if (value.endsWith(" ")) {
       if (activeWordIndex === words.length - 1) {
         setStartCounting(false);
         setUserInput("Finished");
@@ -59,34 +70,57 @@ const App = () => {
     }
   };
 
-  return (
-    <div>
-      <h1>Typing Speed Test</h1>
-      <Timer
-        startCounting={startCounting}
-        correctWords={correctWords.filter(Boolean).length}
-      />
-      <p>
-        {words.map((word, index) => {
-          return (
-            <Word
-              key={index}
-              text={word}
-              active={index === activeWordIndex}
-              correct={correctWords.includes(word)}
-              incorrect={incorrectWords.includes(word)}
-            />
-          );
-        })}
-      </p>
+  const restartGame = () => {
+    getWords();
+    setUserInput("");
+    setActiveWordIndex(0);
+    setTimeElapsed(0);
+    setCorrectWords([]);
+    setIncorrectWords([]);
+    setStartCounting(false);
+  };
 
-      <input
-        className="border-2 border-gray-600 p-2"
-        placeholder="Type here..."
-        type="text"
-        value={userInput}
-        onChange={(e) => checkInput(e.target.value)}
-      />
+  return (
+    <div className="flex flex-col">
+      <Header restartGame={restartGame} />
+      {loading ? (
+        <div className="flex justify-center">
+          <div className="spinner">Loading..</div>
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center">
+              <Timer
+                startCounting={startCounting}
+                correctWords={correctWords.length}
+                timeElapsed={timeElapsed}
+                setTimeElapsed={setTimeElapsed}
+              />
+            </div>
+            <p>
+              {words.map((word, index) => (
+                <Word
+                  key={index}
+                  text={word}
+                  active={index === activeWordIndex}
+                  correct={correctWords.includes(word)}
+                  incorrect={incorrectWords.includes(word)}
+                />
+              ))}
+            </p>
+          </div>
+          <div className="flex flex-col items-center">
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              type="text"
+              value={userInput}
+              onChange={(e) => checkInput(e.target.value)}
+              placeholder="Type here..."
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
