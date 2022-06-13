@@ -15,7 +15,7 @@ const Word: React.FC<Props> = ({ text, active, correct, incorrect }) => {
     return <span className="font-bold text-red-600 "> {text} </span>;
   }
   if (active) {
-    return <span className="font-bold "> {text} </span>;
+    return <span className="font-bold "> {text}</span>;
   }
 
   return <span> {text} </span>;

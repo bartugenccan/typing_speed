@@ -109,85 +109,87 @@ const App = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center">
+    <>
       <Header restartGame={restartGame} />
-      {loading ? (
-        <div className="flex justify-center">
-          <div className="spinner">
-            <SpinnerDotted />
+      <div className="flex flex-col h-screen justify-start mt-12 md:justify-center items-center">
+        {loading ? (
+          <div className="flex justify-center">
+            <div className="spinner">
+              <SpinnerDotted />
+            </div>
           </div>
-        </div>
-      ) : words.length === 0 ? (
-        <button
-          className="bg-green-500 p-5 rounded-xl text-white"
-          onClick={getWords}
-        >
-          Get Words
-        </button>
-      ) : gameFinished ? (
-        <>
-          <div className="flex flex-col items-center">
-            <Timer
-              startCounting={startCounting}
-              correctWords={correctWords.length}
-              timeElapsed={timeElapsed}
-              setTimeElapsed={setTimeElapsed}
-            />
-            <p className=" w-1/2 border-green-500 border-4 p-8 rounded-lg">
-              {words.map((word, index) => (
-                <Word
-                  key={index}
-                  text={word}
-                  active={index === activeWordIndex}
-                  correct={correctWords.includes(word)}
-                  incorrect={incorrectWords.includes(word)}
-                />
-              ))}
-            </p>
-          </div>
-          <div
-            className="bg-green-500 border-2 border-gray-200
+        ) : words.length === 0 ? (
+          <button
+            className="bg-green-500 p-5 rounded-xl text-white"
+            onClick={getWords}
+          >
+            Get Words
+          </button>
+        ) : gameFinished ? (
+          <>
+            <div className="flex flex-col items-center">
+              <Timer
+                startCounting={startCounting}
+                correctWords={correctWords.length}
+                timeElapsed={timeElapsed}
+                setTimeElapsed={setTimeElapsed}
+              />
+              <p className=" w-1/2 border-green-500 border-4 p-8 rounded-lg">
+                {words.map((word, index) => (
+                  <Word
+                    key={index}
+                    text={word}
+                    active={index === activeWordIndex}
+                    correct={correctWords.includes(word)}
+                    incorrect={incorrectWords.includes(word)}
+                  />
+                ))}
+              </p>
+            </div>
+            <div
+              className="bg-green-500 border-2 border-gray-200
             rounded w-1/2 py-2 px-4 mt-12 text-white text-center text-xl
             focus:outline-none focus:bg-white focus:border-green-500"
-          >
-            Game Finished !
-          </div>
+            >
+              Game Finished !
+            </div>
 
-          <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
-        </>
-      ) : (
-        <>
-          <div className="flex flex-col items-center">
-            <Timer
-              startCounting={startCounting}
-              correctWords={correctWords.length}
-              timeElapsed={timeElapsed}
-              setTimeElapsed={setTimeElapsed}
+            <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col items-center">
+              <Timer
+                startCounting={startCounting}
+                correctWords={correctWords.length}
+                timeElapsed={timeElapsed}
+                setTimeElapsed={setTimeElapsed}
+              />
+              <p className=" w-1/2 border-green-500 border-4 p-8 rounded-lg">
+                {words.map((word, index) => (
+                  <Word
+                    key={index}
+                    text={word}
+                    active={index === activeWordIndex}
+                    correct={correctWords.includes(word)}
+                    incorrect={incorrectWords.includes(word)}
+                  />
+                ))}
+              </p>
+            </div>
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+              type="text"
+              value={userInput}
+              onChange={(e) => checkInput(e.target.value)}
+              placeholder="Type here..."
             />
-            <p className=" w-1/2 border-green-500 border-4 p-8 rounded-lg">
-              {words.map((word, index) => (
-                <Word
-                  key={index}
-                  text={word}
-                  active={index === activeWordIndex}
-                  correct={correctWords.includes(word)}
-                  incorrect={incorrectWords.includes(word)}
-                />
-              ))}
-            </p>
-          </div>
-          <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
-            type="text"
-            value={userInput}
-            onChange={(e) => checkInput(e.target.value)}
-            placeholder="Type here..."
-          />
 
-          <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
-        </>
-      )}
-    </div>
+            <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
