@@ -8,6 +8,7 @@ import { SpinnerDotted } from "spinners-react";
 import Word from "./components/Word";
 import Timer from "./components/Timer";
 import Header from "./components/Header";
+import ResultsModal from "./components/ResultsModal";
 
 const App = () => {
   // words states
@@ -24,8 +25,14 @@ const App = () => {
   // loading
   const [loading, setLoading] = useState<boolean>(false);
 
+  // result
+  const [result, setResult] = useState<any[]>(
+    JSON.parse(localStorage.getItem("storage") || "[]")
+  );
+
   const getWords = async () => {
     setLoading(true);
+
     const { data } = await axios.get(
       "https://random-word-api.herokuapp.com/all"
     );
@@ -34,9 +41,13 @@ const App = () => {
     setLoading(false);
   };
 
+  const minutes = timeElapsed / 60;
+  const WPM = correctWords.length / minutes;
+
   useEffect(() => {
-    getWords();
-  }, []);
+    localStorage.setItem("storage", JSON.stringify(result));
+    console.log(result);
+  }, [result]);
 
   const shuffle = (array: string[]) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -57,6 +68,15 @@ const App = () => {
       if (activeWordIndex === words.length - 1) {
         setStartCounting(false);
         setUserInput("Finished");
+
+        // setting storage
+        const fixedResults = {
+          WPM: WPM.toFixed(2),
+          timeElapsed: timeElapsed,
+        };
+        const newResult = [...result, fixedResults];
+        setResult(newResult);
+        localStorage.setItem("storage", JSON.stringify(result));
       } else {
         setUserInput("");
       }
@@ -92,6 +112,13 @@ const App = () => {
             <SpinnerDotted />
           </div>
         </div>
+      ) : words.length === 0 ? (
+        <button
+          className="bg-green-500 p-5 rounded-xl text-white"
+          onClick={getWords}
+        >
+          Get Words
+        </button>
       ) : (
         <>
           <div className="flex flex-col items-center">
@@ -121,6 +148,7 @@ const App = () => {
             onChange={(e) => checkInput(e.target.value)}
             placeholder="Type here..."
           />
+          <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
         </>
       )}
     </div>
