@@ -7,7 +7,7 @@
 <p><font size="3">
   This is an app that collects users typing speed data with time and words per minute. 
   <br><br> 
-  <strong><em>Here is the live version:</em></strong>
+  <strong><em>Here is the live version:</em></strong>https://typing-speed-4un.pages.dev/
 </p>
 <h2>
   Flow :ocean:
