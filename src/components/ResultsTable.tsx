@@ -16,8 +16,10 @@ const ResultsTable: React.FC<Props> = ({ WPM, timeElapsed }) => {
       </thead>
       <tbody>
         <tr className="bg-green-500 text-center border-4">
-          <td className="border-b border-green-500 px-4 py-2">{WPM}</td>
-          <td className="border-b border-green-500 px-4 py-2">
+          <td className="border-b border-green-500 px-4 py-2 text-white">
+            {WPM}
+          </td>
+          <td className="border-b border-green-500 px-4 py-2 text-white">
             {timeElapsed} Seconds
           </td>
         </tr>

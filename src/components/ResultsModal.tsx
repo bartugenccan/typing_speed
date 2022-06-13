@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
 import ResultsTable from "./ResultsTable";
 
 interface Props {
@@ -9,7 +8,7 @@ interface Props {
 }
 
 const ResultsModal: React.FC<Props> = ({ result }) => {
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   return (
     <>
       <button
@@ -38,8 +37,8 @@ const ResultsModal: React.FC<Props> = ({ result }) => {
                   </button>
                 </div>
                 <div className="relative flex flex-col justify-center items-center m-5">
-                  {result.map(({ WPM, timeElapsed }) => (
-                    <ResultsTable WPM={WPM} timeElapsed={timeElapsed} />
+                  {result.map(({ WPM, timeElapsed, id }) => (
+                    <ResultsTable WPM={WPM} timeElapsed={timeElapsed} key={id} />
                   ))}
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

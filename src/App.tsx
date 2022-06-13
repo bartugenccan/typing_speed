@@ -9,6 +9,7 @@ import Word from "./components/Word";
 import Timer from "./components/Timer";
 import Header from "./components/Header";
 import ResultsModal from "./components/ResultsModal";
+import { v4 as uuid } from "uuid";
 
 const App = () => {
   // words states
@@ -30,6 +31,9 @@ const App = () => {
     JSON.parse(localStorage.getItem("storage") || "[]")
   );
 
+  // game finished
+  const [gameFinished, setGameFinished] = useState<boolean>(false);
+
   const getWords = async () => {
     setLoading(true);
 
@@ -46,7 +50,6 @@ const App = () => {
 
   useEffect(() => {
     localStorage.setItem("storage", JSON.stringify(result));
-    console.log(result);
   }, [result]);
 
   const shuffle = (array: string[]) => {
@@ -67,12 +70,13 @@ const App = () => {
     if (value.endsWith(" ")) {
       if (activeWordIndex === words.length - 1) {
         setStartCounting(false);
-        setUserInput("Finished");
+        setGameFinished(true);
 
         // setting storage
         const fixedResults = {
           WPM: WPM.toFixed(2),
           timeElapsed: timeElapsed,
+          id: uuid(),
         };
         const newResult = [...result, fixedResults];
         setResult(newResult);
@@ -94,6 +98,7 @@ const App = () => {
   };
 
   const restartGame = () => {
+    setGameFinished(false);
     getWords();
     setUserInput("");
     setActiveWordIndex(0);
@@ -119,6 +124,37 @@ const App = () => {
         >
           Get Words
         </button>
+      ) : gameFinished ? (
+        <>
+          <div className="flex flex-col items-center">
+            <Timer
+              startCounting={startCounting}
+              correctWords={correctWords.length}
+              timeElapsed={timeElapsed}
+              setTimeElapsed={setTimeElapsed}
+            />
+            <p className=" w-1/2 border-green-500 border-4 p-8 rounded-lg">
+              {words.map((word, index) => (
+                <Word
+                  key={index}
+                  text={word}
+                  active={index === activeWordIndex}
+                  correct={correctWords.includes(word)}
+                  incorrect={incorrectWords.includes(word)}
+                />
+              ))}
+            </p>
+          </div>
+          <div
+            className="bg-green-500 border-2 border-gray-200
+            rounded w-1/2 py-2 px-4 mt-12 text-white text-center text-xl
+            focus:outline-none focus:bg-white focus:border-green-500"
+          >
+            Game Finished !
+          </div>
+
+          <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
+        </>
       ) : (
         <>
           <div className="flex flex-col items-center">
@@ -140,7 +176,6 @@ const App = () => {
               ))}
             </p>
           </div>
-
           <input
             className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 mt-12 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
             type="text"
@@ -148,6 +183,7 @@ const App = () => {
             onChange={(e) => checkInput(e.target.value)}
             placeholder="Type here..."
           />
+
           <ResultsModal result={result} WPM={WPM} timeElapsed={timeElapsed} />
         </>
       )}

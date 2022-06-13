@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 interface Props {
   startCounting: boolean;
@@ -29,12 +29,12 @@ const Timer: React.FC<Props> = ({
   return (
     <div className="flex justify-center items-center mb-12">
       <div className="bg-green-500 p-5 rounded-xl mr-5 ">
-        <span className="font-semibold text-5xl tracking-tight text-white">
+        <span className="font-semibold text-xl sm:text-5xl tracking-tight text-white">
           Time: {timeElapsed}
         </span>
       </div>
-      <div className="text-5xl font-bold bg-green-500 p-5 rounded-xl">
-        <span className="font-semibold text-5xl tracking-tight text-white">
+      <div className="font-bold bg-green-500 p-5 rounded-xl">
+        <span className="font-semibold text-xl sm:text-5xl tracking-tight text-white">
           WPM: {(WPM | 0).toFixed(2)}
         </span>
       </div>
